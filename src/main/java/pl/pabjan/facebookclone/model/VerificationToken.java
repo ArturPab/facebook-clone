@@ -1,31 +1,28 @@
 package pl.pabjan.facebookclone.model;
 
-
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
-import javax.validation.constraints.NotBlank;
 import java.time.Instant;
 
 @Entity
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class Post {
+@Table(name = "token")
+public class VerificationToken {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long postId;
+    private Long tokenId;
 
-    @NotBlank
-    private String content;
+    private String token;
 
-    private Instant created;
-
-    @ManyToOne(fetch = FetchType.LAZY)
+    @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "userId", referencedColumnName = "userId")
     private User user;
 
+    private Instant expiryDate;
 }

@@ -27,7 +27,6 @@ public class User {
     private String email;
 
     @NotBlank
-    @Size(max = 50)
     private String password;
 
     @NotBlank

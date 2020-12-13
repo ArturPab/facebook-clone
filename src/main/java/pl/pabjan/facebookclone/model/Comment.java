@@ -1,6 +1,5 @@
 package pl.pabjan.facebookclone.model;
 
-
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -13,19 +12,22 @@ import java.time.Instant;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class Post {
+public class Comment {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long postId;
+    private Long commentId;
 
     @NotBlank
     private String content;
 
-    private Instant created;
-
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "postId", referencedColumnName = "postId")
+    private Post post;
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "userId", referencedColumnName = "userId")
     private User user;
+
+    private Instant created;
 
 }
