@@ -31,7 +31,7 @@ public class UserService {
     public List<UserResponse> findByName(String name) {
         List<User> users = userRepository.findByName(name);
         return users.stream()
-                .map(userMapper::mapToDto)rr
+                .map(userMapper::mapToDto)
                 .collect(Collectors.toList());
     }
 
