@@ -31,6 +31,7 @@ public class AuthService {
         user.setPassword(passwordEncoder.encode(registerRequest.getPassword()));
         user.setName(registerRequest.getName());
         user.setLastName(registerRequest.getLastName());
+        user.setCity(registerRequest.getCity());
         user.setBirthday(registerRequest.getBirthday());
         user.setCreated(Instant.now());
         user.setEnabled(false);

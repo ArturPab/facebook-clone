@@ -16,11 +16,9 @@ import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.security.provisioning.JdbcUserDetailsManager;
-import org.springframework.security.provisioning.UserDetailsManager;
-import org.springframework.security.web.authentication.HttpStatusEntryPoint;
 
-import javax.sql.DataSource;
+import org.springframework.security.web.authentication.HttpStatusEntryPoint;
+import pl.pabjan.facebookclone.service.UserDetailsServiceImpl;
 
 @Configuration
 @EnableWebSecurity
@@ -30,18 +28,16 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     private final RestAuthenticationFailureHandler failureHandler;
     private final RestAuthenticationSuccessHandler successHandler;
     private final String secret;
-    private final DataSource dataSource;
     private final UserDetailsService userDetailsService;
 
     public SecurityConfig(ObjectMapper objectMapper,
                           RestAuthenticationFailureHandler failureHandler,
                           RestAuthenticationSuccessHandler successHandler,
-                          @Value("${jwt.secret}") String secret, DataSource dataSource, UserDetailsService userDetailsService) {
+                          @Value("${jwt.secret}") String secret, UserDetailsServiceImpl userDetailsService) {
         this.objectMapper = objectMapper;
         this.failureHandler = failureHandler;
         this.successHandler = successHandler;
         this.secret = secret;
-        this.dataSource = dataSource;
         this.userDetailsService = userDetailsService;
     }
 
@@ -63,7 +59,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
                 .and()
                 .addFilter(authenticationFilter())
-                .addFilter(new JwtAuthorizationFilter(authenticationManager(), userDetailsManager(), secret))
+                .addFilter(new JwtAuthorizationFilter(authenticationManager(), userDetailsService, secret))
                 .exceptionHandling()
                 .authenticationEntryPoint(new HttpStatusEntryPoint(HttpStatus.UNAUTHORIZED));
     }
@@ -76,10 +72,6 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         return authenticationFilter;
     }
 
-    @Bean
-    public UserDetailsManager userDetailsManager() {
-        return new JdbcUserDetailsManager(dataSource);
-    }
 
     @Autowired
     public void configureGlobal(AuthenticationManagerBuilder auth) throws Exception {

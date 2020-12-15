@@ -38,6 +38,11 @@ public class User {
     private String lastName;
 
     @NotBlank
+    @Size(max = 50)
+    private String city;
+
+
+    @NotBlank
     @JsonFormat(pattern="yyyy-MM-dd")
     private LocalDate birthday;
 
