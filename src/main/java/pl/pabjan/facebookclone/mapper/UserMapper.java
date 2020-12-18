@@ -1,16 +1,16 @@
 package pl.pabjan.facebookclone.mapper;
-
-import org.mapstruct.Mapper;
-import org.mapstruct.Mapping;
+import org.springframework.stereotype.Component;
 import pl.pabjan.facebookclone.controller.dto.UserResponse;
 import pl.pabjan.facebookclone.model.User;
+@Component
+public class UserMapper {
 
-@Mapper(componentModel = "spring")
-public interface UserMapper {
-
-    @Mapping(source="name", target = "name")
-    @Mapping(source="lastName", target = "lastName")
-    @Mapping(source="city", target = "city")
-    @Mapping(source="birthday", target = "birthday")
-    UserResponse mapToDto(User user);
+    public UserResponse mapToDto(User user) {
+        UserResponse userResponse = new UserResponse();
+        userResponse.setBirthday(user.getBirthday());
+        userResponse.setCity(user.getCity());
+        userResponse.setName(user.getName());
+        userResponse.setLastName(user.getLastName());
+        return userResponse;
+    }
 }

@@ -1,6 +1,7 @@
 package pl.pabjan.facebookclone.service;
 
 import lombok.AllArgsConstructor;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -65,5 +66,12 @@ public class AuthService {
         User user = userRepository.findByEmail(email).orElseThrow(() -> new FacebookCloneException("Wrong email!"));
         user.setEnabled(true);
         userRepository.save(user);
+    }
+
+    @Transactional(readOnly = true)
+    public User getCurrentUser() {
+        String principal = SecurityContextHolder
+                .getContext().getAuthentication().getName();
+        return userRepository.findByEmail(principal).orElseThrow(() -> new FacebookCloneException("Not found user"));
     }
 }
