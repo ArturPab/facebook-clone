@@ -11,9 +11,11 @@ import java.time.LocalDate;
 @AllArgsConstructor
 @NoArgsConstructor
 public class UserResponse {
+
     private String name;
     private String lastName;
     private String city;
-    @JsonFormat(pattern="yyyy-MM-dd")
+
+    @JsonFormat(pattern = "yyyy-MM-dd")
     private LocalDate birthday;
 }

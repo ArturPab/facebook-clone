@@ -29,14 +29,20 @@ public class JsonObjectAuthenticationFilter extends UsernamePasswordAuthenticati
             while ((line = reader.readLine()) != null) {
                 sb.append(line);
             }
-            LoginRequest authRequest = objectMapper.readValue(sb.toString(), LoginRequest.class);
-            UsernamePasswordAuthenticationToken token = new UsernamePasswordAuthenticationToken(
-                    authRequest.getEmail(), authRequest.getPassword()
-            );
+            UsernamePasswordAuthenticationToken token = getToken(sb);
             setDetails(request, token);
-            return this.getAuthenticationManager().authenticate(token);
+
+            return getAuthenticationManager().authenticate(token);
         } catch (IOException e) {
             throw new IllegalArgumentException(e.getMessage());
         }
+    }
+
+    private UsernamePasswordAuthenticationToken getToken(StringBuilder sb) throws com.fasterxml.jackson.core.JsonProcessingException {
+        LoginRequest authRequest = objectMapper.readValue(sb.toString(), LoginRequest.class);
+
+        return new UsernamePasswordAuthenticationToken(
+                authRequest.getEmail(), authRequest.getPassword()
+        );
     }
 }

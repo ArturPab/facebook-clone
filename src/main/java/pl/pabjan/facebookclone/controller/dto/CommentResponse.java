@@ -10,6 +10,7 @@ import java.time.Instant;
 @AllArgsConstructor
 @NoArgsConstructor
 public class CommentResponse {
+    
     private String content;
     private Instant created;
     private String name;

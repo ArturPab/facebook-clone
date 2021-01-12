@@ -1,4 +1,5 @@
 package pl.pabjan.facebookclone.mapper;
+
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Component;
 import pl.pabjan.facebookclone.controller.dto.CommentRequest;
@@ -21,6 +22,7 @@ public class CommentMapper {
         commentResponse.setCreated(comment.getCreated());
         commentResponse.setName(comment.getUser().getName());
         commentResponse.setLastName(comment.getUser().getLastName());
+
         return commentResponse;
     }
 
@@ -30,6 +32,7 @@ public class CommentMapper {
         comment.setContent(commentRequest.getContent());
         comment.setPost(postRepository.findById(commentRequest.getPostId()).orElseThrow(() -> new FacebookCloneException("Not found post")));
         comment.setUser(user);
+
         return comment;
     }
 }

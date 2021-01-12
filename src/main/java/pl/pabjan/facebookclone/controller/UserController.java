@@ -36,7 +36,7 @@ public class UserController {
         return status(HttpStatus.OK).body(userService.findByName(name));
     }
 
-    @GetMapping("/by-lastName/{lastName}")
+    @GetMapping("/by-last-name/{lastName}")
     public ResponseEntity<List<UserResponse>> findByLastName(@PathVariable String lastName) {
         return status(HttpStatus.OK).body(userService.findByLastName(lastName));
     }

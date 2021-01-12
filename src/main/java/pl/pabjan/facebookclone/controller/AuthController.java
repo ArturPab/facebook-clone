@@ -8,9 +8,6 @@ import pl.pabjan.facebookclone.controller.dto.LoginRequest;
 import pl.pabjan.facebookclone.controller.dto.RegisterRequest;
 import pl.pabjan.facebookclone.service.AuthService;
 
-import javax.mail.MessagingException;
-import java.io.IOException;
-
 @AllArgsConstructor
 @RestController
 public class AuthController {

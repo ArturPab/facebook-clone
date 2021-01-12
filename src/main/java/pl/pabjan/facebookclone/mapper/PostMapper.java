@@ -8,6 +8,7 @@ import pl.pabjan.facebookclone.model.Comment;
 import pl.pabjan.facebookclone.model.Post;
 import pl.pabjan.facebookclone.model.User;
 import pl.pabjan.facebookclone.repo.CommentRepository;
+
 import java.time.Instant;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -26,6 +27,7 @@ public class PostMapper {
         postResponse.setLastName(post.getUser().getLastName());
         List<Comment> comments = commentRepository.findByPost(post);
         postResponse.setComments(comments.stream().map(commentMapper::mapToDto).collect(Collectors.toList()));
+
         return postResponse;
     }
 
@@ -34,6 +36,7 @@ public class PostMapper {
         post.setContent(postRequest.getContent());
         post.setCreated(Instant.now());
         post.setUser(user);
+
         return post;
     }
 }

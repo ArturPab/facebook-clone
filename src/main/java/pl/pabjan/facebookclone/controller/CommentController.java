@@ -19,6 +19,7 @@ public class CommentController {
     @PostMapping
     public ResponseEntity<Void> save(CommentRequest commentRequest) {
         commentService.save(commentRequest);
+
         return new ResponseEntity<>(HttpStatus.CREATED);
     }
 }
