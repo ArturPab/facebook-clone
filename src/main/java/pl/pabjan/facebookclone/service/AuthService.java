@@ -37,6 +37,7 @@ public class AuthService {
         user.setCreated(Instant.now());
         user.setEnabled(false);
 
+
         userRepository.save(user);
 
         String token = generateVerificationToken(user);

@@ -30,7 +30,7 @@ public class CommentMapper {
         Comment comment = new Comment();
         comment.setCreated(Instant.now());
         comment.setContent(commentRequest.getContent());
-        comment.setPost(postRepository.findById(commentRequest.getPostId()).orElseThrow(() -> new FacebookCloneException("Not found post")));
+        comment.setPostId(commentRequest.getPostId());
         comment.setUser(user);
 
         return comment;

@@ -23,7 +23,7 @@ public class PostService {
     private final AuthService authService;
 
     public List<PostResponse> findAll() {
-        return postRepository.findAll()
+        return postRepository.findAllPosts()
                 .stream()
                 .map(postMapper::mapToDto)
                 .collect(Collectors.toList());

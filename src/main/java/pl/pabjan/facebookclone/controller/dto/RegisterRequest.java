@@ -12,7 +12,7 @@ public class RegisterRequest {
     private Long userId;
 
     @NotBlank
-    @Size(max = 50)
+    @Size(max = 80)
     private String email;
 
     @NotBlank

@@ -2,6 +2,7 @@ package pl.pabjan.facebookclone.mapper;
 
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Component;
+import pl.pabjan.facebookclone.controller.dto.CommentResponse;
 import pl.pabjan.facebookclone.controller.dto.PostRequest;
 import pl.pabjan.facebookclone.controller.dto.PostResponse;
 import pl.pabjan.facebookclone.model.Comment;
@@ -25,8 +26,10 @@ public class PostMapper {
         postResponse.setCreated(post.getCreated());
         postResponse.setName(post.getUser().getName());
         postResponse.setLastName(post.getUser().getLastName());
-        List<Comment> comments = commentRepository.findByPost(post);
-        postResponse.setComments(comments.stream().map(commentMapper::mapToDto).collect(Collectors.toList()));
+        postResponse.setComments(post.getComment()
+                .stream()
+                .map(commentMapper::mapToDto)
+                .collect(Collectors.toList()));
 
         return postResponse;
     }

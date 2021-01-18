@@ -8,6 +8,7 @@ import lombok.NoArgsConstructor;
 import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
 import java.time.Instant;
+import java.util.List;
 
 @Entity
 @Data
@@ -27,5 +28,9 @@ public class Post {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "userId", referencedColumnName = "userId")
     private User user;
+
+    @OneToMany(cascade = CascadeType.REMOVE)
+    @JoinColumn(name = "postId", updatable = false, insertable = false)
+    private List<Comment> comment;
 
 }
