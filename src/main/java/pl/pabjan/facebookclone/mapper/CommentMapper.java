@@ -22,6 +22,7 @@ public class CommentMapper {
         commentResponse.setCreated(comment.getCreated());
         commentResponse.setName(comment.getUser().getName());
         commentResponse.setLastName(comment.getUser().getLastName());
+        commentResponse.setPostId(comment.getPostId());
 
         return commentResponse;
     }
@@ -32,6 +33,7 @@ public class CommentMapper {
         comment.setContent(commentRequest.getContent());
         comment.setPostId(commentRequest.getPostId());
         comment.setUser(user);
+        comment.setPostId(commentRequest.getPostId());
 
         return comment;
     }

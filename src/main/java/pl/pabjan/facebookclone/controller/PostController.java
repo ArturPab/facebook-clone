@@ -19,8 +19,8 @@ public class PostController {
     private final PostService postService;
 
     @GetMapping
-    public ResponseEntity<List<PostResponse>> findAll() {
-        return status(HttpStatus.OK).body(postService.findAll());
+    public ResponseEntity<List<PostResponse>> findAll(@RequestParam(required = false) Integer page) {
+        return status(HttpStatus.OK).body(postService.findAll(page));
     }
 
     @GetMapping("/by-id/{id}")

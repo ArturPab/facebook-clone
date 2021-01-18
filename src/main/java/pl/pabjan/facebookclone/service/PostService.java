@@ -1,13 +1,17 @@
 package pl.pabjan.facebookclone.service;
 
 import lombok.AllArgsConstructor;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
+import pl.pabjan.facebookclone.controller.dto.CommentResponse;
 import pl.pabjan.facebookclone.controller.dto.PostRequest;
 import pl.pabjan.facebookclone.controller.dto.PostResponse;
 import pl.pabjan.facebookclone.exceptions.FacebookCloneException;
 import pl.pabjan.facebookclone.mapper.PostMapper;
+import pl.pabjan.facebookclone.model.Comment;
 import pl.pabjan.facebookclone.model.Post;
 import pl.pabjan.facebookclone.model.User;
+import pl.pabjan.facebookclone.repo.CommentRepository;
 import pl.pabjan.facebookclone.repo.PostRepository;
 import pl.pabjan.facebookclone.repo.UserRepository;
 
@@ -21,12 +25,19 @@ public class PostService {
     private final PostMapper postMapper;
     private final UserRepository userRepository;
     private final AuthService authService;
+    private final CommentRepository commentRepository;
+    private static final int PAGE_SIZE = 3;
 
-    public List<PostResponse> findAll() {
-        return postRepository.findAllPosts()
+    public List<PostResponse> findAll(Integer page) {
+        int pageNumber = page != null && page >=0 ? page : 0;
+        List<Post> posts = postRepository.findAllPosts(PageRequest.of(pageNumber, PAGE_SIZE));
+        List<Long> ids = posts
                 .stream()
-                .map(postMapper::mapToDto)
+                .map(Post::getPostId)
                 .collect(Collectors.toList());
+        List<Comment> comments = commentRepository.findAllByPostIdIn(ids);
+        return postMapper.mapToDtos(posts, comments);
+
     }
 
     public PostResponse findById(Long id) {

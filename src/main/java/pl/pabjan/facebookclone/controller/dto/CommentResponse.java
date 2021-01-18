@@ -15,4 +15,5 @@ public class CommentResponse {
     private Instant created;
     private String name;
     private String lastName;
+    private Long postId;
 }
