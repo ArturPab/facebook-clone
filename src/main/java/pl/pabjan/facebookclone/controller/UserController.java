@@ -3,10 +3,8 @@ package pl.pabjan.facebookclone.controller;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+import pl.pabjan.facebookclone.controller.dto.RegisterRequest;
 import pl.pabjan.facebookclone.controller.dto.UserResponse;
 import pl.pabjan.facebookclone.service.UserService;
 
@@ -45,5 +43,8 @@ public class UserController {
         return status(HttpStatus.OK).body(userService.findByCity(city));
     }
 
-
+    public ResponseEntity<Void> edit(@RequestBody RegisterRequest request) {
+        userService.edit(request);
+        return new ResponseEntity<>(HttpStatus.CREATED);
+    }
 }

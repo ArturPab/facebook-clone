@@ -9,7 +9,6 @@ import java.time.LocalDate;
 
 @Data
 public class RegisterRequest {
-    private Long userId;
 
     @NotBlank
     @Size(max = 80)
