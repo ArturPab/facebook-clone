@@ -6,6 +6,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import pl.pabjan.facebookclone.controller.dto.PostRequest;
 import pl.pabjan.facebookclone.controller.dto.PostResponse;
+import pl.pabjan.facebookclone.model.Post;
 import pl.pabjan.facebookclone.service.PostService;
 
 import java.util.List;
@@ -37,6 +38,12 @@ public class PostController {
     @PostMapping
     public ResponseEntity<Void> save(@RequestBody PostRequest postRequest) {
         postService.save(postRequest);
+        return new ResponseEntity<>(HttpStatus.CREATED);
+    }
+
+    @PutMapping("/by-id/{id}")
+    public ResponseEntity<Void> edit(@PathVariable Long id, @RequestBody PostRequest postRequest) {
+        postService.edit(postRequest, id);
         return new ResponseEntity<>(HttpStatus.CREATED);
     }
 

@@ -3,7 +3,6 @@ package pl.pabjan.facebookclone.service;
 import lombok.AllArgsConstructor;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
-import pl.pabjan.facebookclone.controller.dto.CommentResponse;
 import pl.pabjan.facebookclone.controller.dto.PostRequest;
 import pl.pabjan.facebookclone.controller.dto.PostResponse;
 import pl.pabjan.facebookclone.exceptions.FacebookCloneException;
@@ -15,6 +14,7 @@ import pl.pabjan.facebookclone.repo.CommentRepository;
 import pl.pabjan.facebookclone.repo.PostRepository;
 import pl.pabjan.facebookclone.repo.UserRepository;
 
+import javax.transaction.Transactional;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -55,5 +55,15 @@ public class PostService {
 
     public void save(PostRequest postRequest) {
         postRepository.save(postMapper.map(postRequest, authService.getCurrentUser()));
+    }
+
+    @Transactional
+    public void edit(PostRequest postRequest, Long id) {
+        Post post = postRepository.findById(id).orElseThrow(() -> new FacebookCloneException("Not found post"));
+        User user = authService.getCurrentUser();
+        if(user == post.getUser()) {
+            post.setContent(postRequest.getContent());
+            postRepository.save(post);
+        }
     }
 }
