@@ -27,10 +27,10 @@ The purpose of creating this project is to broaden my programming skills. RestAP
 You need to configure your IDE (I'm using Intellij IDEA) with JDK 11 and Apache Maven to run this application. You also need to create MySQL database called Facebook. Tables will be created automatically while application is building.
 
 #### You need to be authenticated with JWT token which you will get after being logged in. For request I used Postman.
-![login example](/images/login.png)
+![login example](./images/login.PNG)
 
 ##### You need to send Post and Put request as a JSON body:
-![put example](/images/put.png)
+![put example](./images/put.PNG)
 
 ##### Get request example:
 ![get example](/images/get.png)
