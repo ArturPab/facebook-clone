@@ -4,6 +4,7 @@ import lombok.AllArgsConstructor;
 import org.springframework.cache.annotation.CachePut;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import pl.pabjan.facebookclone.controller.dto.PostRequest;
 import pl.pabjan.facebookclone.controller.dto.PostResponse;
@@ -34,7 +35,7 @@ public class PostService {
     @Cacheable(cacheNames = "AllPosts")
     public List<PostResponse> findAll(Integer page) {
         int pageNumber = page != null && page >=0 ? page : 0;
-        List<Post> posts = postRepository.findAllPosts(PageRequest.of(pageNumber, PAGE_SIZE));
+        List<Post> posts = postRepository.findAllPosts(PageRequest.of(pageNumber, PAGE_SIZE, Sort.by(Sort.Order.desc("created"))));
         List<Long> ids = posts
                 .stream()
                 .map(Post::getPostId)
