@@ -33,7 +33,7 @@ You need to configure your IDE (I'm using Intellij IDEA) with JDK 11 and Apache 
 ![put example](./images/put.PNG)
 
 ##### Get request example:
-![get example](/images/get.png)
+![get example](./images/get.PNG)
 
 ## Features
 - Register, verify account with link, which application will send on your e-mail
