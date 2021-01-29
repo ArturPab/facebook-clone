@@ -42,4 +42,4 @@ You need to configure your IDE (I'm using Intellij IDEA) with JDK 11 and Apache 
 
 #### To Do
 - Web Page
-- Uploade photos
+- Upload photos
