@@ -20,6 +20,7 @@ public class PostMapper {
 
     public PostResponse mapToDto(Post post) {
         PostResponse postResponse = new PostResponse();
+        postResponse.setPostId(post.getPostId());
         postResponse.setContent(post.getContent());
         postResponse.setCreated(post.getCreated());
         postResponse.setLastName(post.getUser().getLastName());

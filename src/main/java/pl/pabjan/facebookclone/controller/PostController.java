@@ -42,8 +42,8 @@ public class PostController {
     }
 
     @PutMapping("/by-id/{id}")
-    public ResponseEntity<Void> edit(@PathVariable Long id, @RequestBody PostRequest postRequest) {
-        postService.edit(postRequest, id);
+    public ResponseEntity<Void> edit(@PathVariable Long id, @RequestBody PostRequest post) {
+        postService.edit(id, post);
         return new ResponseEntity<>(HttpStatus.CREATED);
     }
 

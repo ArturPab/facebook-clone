@@ -1,6 +1,8 @@
 package pl.pabjan.facebookclone.service;
 
 import lombok.AllArgsConstructor;
+import org.springframework.cache.annotation.CachePut;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 import pl.pabjan.facebookclone.controller.dto.PostRequest;
@@ -28,6 +30,8 @@ public class PostService {
     private final CommentRepository commentRepository;
     private static final int PAGE_SIZE = 3;
 
+
+    @Cacheable(cacheNames = "AllPosts")
     public List<PostResponse> findAll(Integer page) {
         int pageNumber = page != null && page >=0 ? page : 0;
         List<Post> posts = postRepository.findAllPosts(PageRequest.of(pageNumber, PAGE_SIZE));
@@ -40,17 +44,21 @@ public class PostService {
 
     }
 
-    public PostResponse findById(Long id) {
-        return postMapper.mapToDto(postRepository.findById(id).orElseThrow(() -> new FacebookCloneException("Not found post")));
+    @Cacheable(cacheNames = "PostById", key = "#postId")
+    public PostResponse findById(Long postId) {
+        return postMapper.mapToDto(postRepository.findById(postId).orElseThrow(() -> new FacebookCloneException("Not found post")));
     }
 
-
-    public List<PostResponse> findByUser(Long id) {
-        User user = userRepository.findById(id).orElseThrow(() -> new FacebookCloneException("Not found user"));
-        return postRepository.findByUser(user)
+    @Cacheable(cacheNames = "PostByUser", key = "#userId")
+    public List<PostResponse> findByUser(Long userId) {
+        User user = userRepository.findById(userId).orElseThrow(() -> new FacebookCloneException("Not found user"));
+        List<Post> posts = postRepository.findByUser(user);
+        List<Long> ids = posts
                 .stream()
-                .map(postMapper::mapToDto)
+                .map(Post::getPostId)
                 .collect(Collectors.toList());
+        List<Comment> comments = commentRepository.findAllByPostIdIn(ids);
+        return postMapper.mapToDtos(posts, comments);
     }
 
     public void save(PostRequest postRequest) {
@@ -58,12 +66,13 @@ public class PostService {
     }
 
     @Transactional
-    public void edit(PostRequest postRequest, Long id) {
-        Post post = postRepository.findById(id).orElseThrow(() -> new FacebookCloneException("Not found post"));
+    @CachePut(cacheNames = "PostById", key = "#result.postId")
+    public PostResponse edit(Long id, PostRequest post) {
+        Post postEdited = postRepository.findById(id).orElseThrow(() -> new FacebookCloneException("Not found post"));
         User user = authService.getCurrentUser();
-        if(user == post.getUser()) {
-            post.setContent(postRequest.getContent());
-            postRepository.save(post);
+        if(user == postEdited.getUser()) {
+            postEdited.setContent(post.getContent());
         }
+        return postMapper.mapToDto(postEdited);
     }
 }

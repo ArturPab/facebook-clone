@@ -11,6 +11,7 @@ import java.util.List;
 @AllArgsConstructor
 @NoArgsConstructor
 public class PostResponse {
+    private Long postId;
     private String content;
     private Instant created;
     private String name;

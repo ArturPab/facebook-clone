@@ -1,6 +1,7 @@
 package pl.pabjan.facebookclone.service;
 
 import lombok.AllArgsConstructor;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import pl.pabjan.facebookclone.controller.dto.RegisterRequest;
@@ -22,24 +23,26 @@ public class UserService {
     private final AuthService authService;
     private final PasswordEncoder passwordEncoder;
 
+    @Cacheable(cacheNames = "AllUsers")
     public List<UserResponse> findAll() {
         List<User> users = userRepository.findAll();
         return users.stream()
                 .map(userMapper::mapToDto)
                 .collect(Collectors.toList());
     }
-
+    @Cacheable(cacheNames = "UsersById", key = "#id")
     public UserResponse findById(Long id) {
         return userMapper.mapToDto(userRepository.findById(id).orElseThrow(() -> new FacebookCloneException("Not found user")));
     }
 
+    @Cacheable(cacheNames = "UsersByName", key = "#name")
     public List<UserResponse> findByName(String name) {
         List<User> users = userRepository.findByName(name);
         return users.stream()
                 .map(userMapper::mapToDto)
                 .collect(Collectors.toList());
     }
-
+    @Cacheable(cacheNames = "UsersByLastName", key = "#lastName")
     public List<UserResponse> findByLastName(String lastName) {
         List<User> users = userRepository.findByLastName(lastName);
         return users.stream()
@@ -47,6 +50,7 @@ public class UserService {
                 .collect(Collectors.toList());
     }
 
+    @Cacheable(cacheNames = "UsersByCity", key = "#city")
     public List<UserResponse> findByCity(String city) {
         List<User> users = userRepository.findByCity(city);
         return users.stream()
