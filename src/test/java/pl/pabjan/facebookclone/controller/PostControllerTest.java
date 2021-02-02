@@ -44,7 +44,7 @@ class PostControllerTest {
 
     @Test
     @Transactional
-    void shouldFindAll() throws Exception {
+    void shouldFindAllAndFindByIdAndFindByUser() throws Exception {
         // given
         PostRequest newPost = new PostRequest();
         newPost.setContent("springboot test");
@@ -57,7 +57,7 @@ class PostControllerTest {
     }
 
     @Test
-    void findById() throws Exception {
+    void shouldFindById() throws Exception {
         // given
         PostRequest postRequest = new PostRequest();
         postRequest.setContent("springboot test");
@@ -76,7 +76,7 @@ class PostControllerTest {
     }
 
     @Test
-    void findByUserName() throws Exception {
+    void shouldFindByUserName() throws Exception {
         // given
         PostRequest postRequest = new PostRequest();
         postRequest.setContent("springboot test by user");
