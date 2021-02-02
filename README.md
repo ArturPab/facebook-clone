@@ -38,7 +38,8 @@ You need to configure your IDE (I'm using Intellij IDEA) with JDK 11 and Apache 
 ## Features
 - Register, verify account with link, which application will send on your e-mail
 - Create posts, when you're logged in
-- See posts with comments ordered by creation date
+- Get posts with comments ordered by creation date
+- Get posts filtered by user and by id
 
 #### To Do
 - Web Page
