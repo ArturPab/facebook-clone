@@ -27,28 +27,32 @@ import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.
 
 @SpringBootTest
 @AutoConfigureMockMvc
-
 @WithMockUser(username = "test@test.com", password = "polska123")
 class PostControllerTest {
 
     @Autowired
     private MockMvc mockMvc;
+
     @Autowired
     private ObjectMapper objectMapper;
+
     @Autowired
     private PostRepository postRepository;
+
     @Autowired
     private PostMapper postMapper;
+
     @Autowired
     private UserRepository userRepository;
 
     @Test
     @Transactional
-    void shouldFindAllAndFindByIdAndFindByUser() throws Exception {
+    void shouldFindAll() throws Exception {
         // given
         PostRequest newPost = new PostRequest();
         newPost.setContent("springboot test");
         postRepository.save(postMapper.map(newPost, userRepository.findById(1L).orElseThrow(() -> new FacebookCloneException("Not found user"))));
+
         // when
         MvcResult mvcResult = mockMvc.perform(MockMvcRequestBuilders.get("/api/posts"))
                 .andDo(print())
@@ -63,11 +67,14 @@ class PostControllerTest {
         postRequest.setContent("springboot test");
         Post newPost = postMapper.map(postRequest, userRepository.findById(1L).orElseThrow(() -> new FacebookCloneException("Not found user")));
         postRepository.save(newPost);
+
         // when
         MvcResult mvcResult = mockMvc.perform(MockMvcRequestBuilders.get("/api/posts/by-id/" + newPost.getPostId()))
                 .andDo(print())
                 .andExpect(MockMvcResultMatchers.status().is(200))
                 .andReturn();
+
+
         // then
         Post post = objectMapper.readValue(mvcResult.getResponse().getContentAsString(), Post.class);
         assertThat(post).isNotNull();
@@ -77,11 +84,13 @@ class PostControllerTest {
 
     @Test
     void shouldFindByUserName() throws Exception {
+
         // given
         PostRequest postRequest = new PostRequest();
         postRequest.setContent("springboot test by user");
         Post newPost = postMapper.map(postRequest, userRepository.findById(1L).orElseThrow(() -> new FacebookCloneException("Not found user")));
         postRepository.save(newPost);
+
         // when
         MvcResult mvcResult = mockMvc.perform(MockMvcRequestBuilders.get("/api/posts/by-user/" + newPost.getUser().getUserId()))
                 .andDo(print())
