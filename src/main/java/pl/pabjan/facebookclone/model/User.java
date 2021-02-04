@@ -21,28 +21,17 @@ public class User {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long userId;
 
-    @NotBlank
-    @Size(max = 50)
     @Column(unique = true)
     private String email;
 
-    @NotBlank
     private String password;
 
-    @NotBlank
-    @Size(max = 30)
     private String name;
 
-    @NotBlank
-    @Size(max = 50)
     private String lastName;
 
-    @NotBlank
-    @Size(max = 50)
     private String city;
 
-
-    @NotBlank
     @JsonFormat(pattern="yyyy-MM-dd")
     private LocalDate birthday;
 
