@@ -25,12 +25,20 @@ public class PostMapper {
         postResponse.setCreated(post.getCreated());
         postResponse.setLastName(post.getUser().getLastName());
         postResponse.setName(post.getUser().getName());
-        List<CommentResponse> comments = post.getComment()
-                .stream()
-                .map(commentMapper::mapToDto)
-                .collect(Collectors.toList());
-        postResponse.setComments(comments);
+
+        if(!isCommentFieldEmpty(post)) {
+            List<CommentResponse> comments = post.getComment()
+                    .stream()
+                    .map(commentMapper::mapToDto)
+                    .collect(Collectors.toList());
+            postResponse.setComments(comments);
+        }
+
         return postResponse;
+    }
+
+    private boolean isCommentFieldEmpty(Post post) {
+        return post.getComment() == null;
     }
 
 
