@@ -9,11 +9,9 @@ import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
-import pl.pabjan.facebookclone.controller.dto.CommentRequest;
 import pl.pabjan.facebookclone.controller.dto.PostResponse;
 import pl.pabjan.facebookclone.exceptions.FacebookCloneException;
 import pl.pabjan.facebookclone.model.Post;
-import pl.pabjan.facebookclone.repo.CommentRepository;
 import pl.pabjan.facebookclone.repo.PostRepository;
 import pl.pabjan.facebookclone.repo.UserRepository;
 
@@ -50,7 +48,7 @@ class CommentControllerTest {
         newPost.setContent("test for comment");
         newPost.setUser(userRepository.findById(1L).orElseThrow(() -> new FacebookCloneException("Not found user")));
         postRepository.save(newPost);
-        Integer postId = Math.toIntExact(newPost.getPostId());
+        Long postId = newPost.getPostId();
 
         //when
         mockMvc.perform(post("/api/comments")
